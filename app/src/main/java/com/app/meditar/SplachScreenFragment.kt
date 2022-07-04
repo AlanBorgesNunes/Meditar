@@ -33,15 +33,21 @@ class SplachScreenFragment : Fragment() {
 
     private fun initView() {
         interAnuncio()
-       Handler(Looper.myLooper()!!).postDelayed({
+      if (  Handler(Looper.myLooper()!!).postDelayed({
          showInter()
-       },5000)
+       },5000) == null){
+          findNavController().navigate(
+              R.id.action_splachScreenFragment_to_inicioFragment
+          )
+      }
+
+
     }
 
     private fun interAnuncio(){
         var adRequest = AdRequest.Builder().build()
 
-        InterstitialAd.load(requireContext(),"ca-app-pub-3940256099942544/3419835294", adRequest,
+        InterstitialAd.load(requireContext(),"ca-app-pub-6827886217820908/4365009358", adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     mInterstitialAd = null
