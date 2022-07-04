@@ -32,9 +32,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
-                android:text="Meditação"
+                android:text="Peace-Meditação"
                 android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textStyle="italic|bold" />
 
         </LinearLayout>
 
