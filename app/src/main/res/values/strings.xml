@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Meditar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="id_admob">ca-app-pub-6827886217820908~6715840525</string>
+</resources>

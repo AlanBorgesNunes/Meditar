@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "379484512712",
+    "project_id": "meditar-f176f",
+    "storage_bucket": "meditar-f176f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:379484512712:android:600bbdcbbf6054d19e60fd",
+        "android_client_info": {
+          "package_name": "com.app.meditar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "379484512712-g7al5vg5sfod44ekk656ok4vfut0cm9i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.meditar",
+            "certificate_hash": "2082a9161699b6ebf113603ce6e54a31e37ce855"
+          }
+        },
+        {
+          "client_id": "379484512712-8pa53tecicgs0g5q37r56mn7lj82ueov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnFprKCf7uOVRxTjNE0lNPNnecuH331KU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "379484512712-8pa53tecicgs0g5q37r56mn7lj82ueov.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
