@@ -14,7 +14,7 @@ import com.google.firebase.messaging.RemoteMessage
 
 
 const val channelId = "notification_channel"
-const val channelName = "com.muita.megasorte"
+const val channelName = "com.app.meditar"
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 class MyFirebaseMessagingService: FirebaseMessagingService() {
 
@@ -27,7 +27,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     }
 
     fun getRemoteView(title: String, message: String): RemoteViews {
-        val remoteView = RemoteViews("com.muita.megasorte", R.layout.item_notificacao)
+        val remoteView = RemoteViews("com.app.meditar", R.layout.item_notificacao)
         remoteView.setTextViewText(R.id.title,title )
         remoteView.setTextViewText(R.id.message,message )
         remoteView.setImageViewResource(R.id.app_logo, R.drawable.logoo)

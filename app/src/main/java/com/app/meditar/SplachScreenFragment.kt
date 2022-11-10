@@ -19,7 +19,6 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 
 class SplachScreenFragment : Fragment() {
     private lateinit var binding: FragmentSplachScreenBinding
-    private var mInterstitialAd: InterstitialAd? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,68 +31,15 @@ class SplachScreenFragment : Fragment() {
     }
 
     private fun initView() {
-        interAnuncio()
-      if (  Handler(Looper.myLooper()!!).postDelayed({
-         showInter()
-       },5000) == null){
-          findNavController().navigate(
-              R.id.action_splachScreenFragment_to_inicioFragment
-          )
-      }
+        Handler(Looper.myLooper()!!).postDelayed({
+            findNavController().navigate(
+                R.id.action_splachScreenFragment_to_inicioFragment
+            )
+        },5000)
+
 
 
     }
-
-    private fun interAnuncio(){
-        var adRequest = AdRequest.Builder().build()
-
-        InterstitialAd.load(requireContext(),"ca-app-pub-6827886217820908/4365009358", adRequest,
-            object : InterstitialAdLoadCallback() {
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    mInterstitialAd = null
-                }
-
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    mInterstitialAd = interstitialAd
-                }
-            })
-
-    }
-
-    private fun showInter(){
-
-        if (mInterstitialAd != null){
-            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback(){
-                override fun onAdClicked() {
-                    super.onAdClicked()
-                }
-
-                override fun onAdDismissedFullScreenContent() {
-                    super.onAdDismissedFullScreenContent()
-                    findNavController().navigate(
-                        R.id.action_splachScreenFragment_to_inicioFragment
-                    )
-
-                }
-
-                override fun onAdFailedToShowFullScreenContent(p0: AdError) {
-                    super.onAdFailedToShowFullScreenContent(p0)
-                }
-
-                override fun onAdImpression() {
-                    super.onAdImpression()
-                }
-
-                override fun onAdShowedFullScreenContent() {
-                    super.onAdShowedFullScreenContent()
-                }
-
-            }
-
-            mInterstitialAd?.show(requireActivity())
-        }
-    }
-
 
 
 }

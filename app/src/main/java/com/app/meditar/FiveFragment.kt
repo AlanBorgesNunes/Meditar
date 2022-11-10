@@ -1,6 +1,8 @@
 package com.app.meditar
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -9,12 +11,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.SeekBar
+import android.widget.Toast
 import com.app.meditar.databinding.FragmentFiveBinding
+import java.io.IOException
 
 class FiveFragment : Fragment() {
+    private lateinit var dialog: AlertDialog
  private lateinit var binding: FragmentFiveBinding
     private var totalTime: Int = 0
+    var mediaPlayer : MediaPlayer? = null
   override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,91 +34,84 @@ class FiveFragment : Fragment() {
       return binding.root
     }
     private fun initView() {
-        val mediaPleyer = MediaPlayer.create(requireContext(), R.raw.quinta_musica)
 
+        mediaPlayer = MediaPlayer()
+        mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
         binding.seekBar.progress = 0
 
-        binding.seekBar.max = mediaPleyer.duration
+        binding.seekBar.max = mediaPlayer!!.duration
 
-        totalTime = mediaPleyer.duration
+        totalTime = mediaPlayer!!.duration
+
 
         binding.btnPlay.setOnClickListener {
-            if (!mediaPleyer.isPlaying){
-                mediaPleyer.start()
-                binding.btnPlay.setImageResource(R.drawable.btn_pause)
-                binding.animation.playAnimation()
+            play()
+        }
+
+        binding.btnPause.setOnClickListener{
+            dialog()
+        }
+
+    }
+
+    private fun play(){
+        val audioUrl = "https://firebasestorage.googleapis.com/v0/b/meditar-f176f.appspot.com/o/Medita%C3%A7%C3%A3o%20-%2035%20minutos%20de%20sons%20relaxantes.mp3?alt=media&token=9093ca80-d023-4e3c-8074-b4bcb92598ba"
+
+        mediaPlayer = MediaPlayer()
+        mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
+
+        try {
+            mediaPlayer!!.setDataSource(audioUrl)
+            mediaPlayer!!.prepare()
+            mediaPlayer!!.start()
+            binding.animation.playAnimation()
+            Toast.makeText(requireContext(),
+                "Relaxe!",Toast.LENGTH_LONG).show()
+        }catch (e : IOException){
+            e.printStackTrace()
+        }
+    }
+
+    private fun pause(){
+        mediaPlayer = MediaPlayer()
+        mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
+
+        if (!mediaPlayer!!.isPlaying){
+            mediaPlayer!!.stop()
+            mediaPlayer!!.reset()
+            mediaPlayer!!.release()
+            binding.animation.pauseAnimation()
+        }else{
+            Toast.makeText(requireContext(),
+                "rodando",Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+    private fun dialog(){
+        val buid = AlertDialog.Builder(requireContext(), R.style.ThemeCustomdialog)
+        val view = layoutInflater.inflate(R.layout.alertdialog, null)
+        buid.setView(view)
+
+        val btnAceito = view.findViewById<Button>(R.id.aceita)
+        btnAceito.setOnClickListener {
+            if (pause() != null){
+                Toast.makeText(requireContext(), "O Aúdio será interrompido em alguns instantes, Aguarde!", Toast.LENGTH_LONG).show()
+                dialog.dismiss()
             }else{
-                mediaPleyer.pause()
-                binding.btnPlay.setImageResource(R.drawable.btn_er)
-                binding.animation.pauseAnimation()
+                Toast.makeText(requireContext(), "Erro! Tente novamente.", Toast.LENGTH_LONG).show()
             }
+
         }
 
-        binding.seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
-            override fun onProgressChanged(p0: SeekBar?, pos: Int, changed: Boolean) {
-                if (changed){
-                    mediaPleyer.seekTo(pos)
-                }
+        val btnClose = view.findViewById<ImageButton>(R.id.close)
+        btnClose.setOnClickListener {
+            dialog.dismiss()
 
-            }
-
-            override fun onStartTrackingTouch(p0: SeekBar?) {
-
-            }
-
-            override fun onStopTrackingTouch(p0: SeekBar?) {
-
-            }
-
-        })
-
-        Thread(Runnable {
-            while (mediaPleyer != null){
-                try {
-                    var msg = Message()
-                    msg.what = mediaPleyer.currentPosition
-                    handler.sendMessage(msg)
-                    Thread.sleep(1000)
-
-                }catch (e: InterruptedException){
-
-                }
-            }
-        }).start()
-    }
-
-    @SuppressLint("HandlerLeak")
-    var handler = object : Handler(){
-        override fun handleMessage(msg: Message) {
-            var currentPosition = msg.what
-
-            binding.seekBar.progress = currentPosition
-
-            var elapseTime = createTimeLabel(currentPosition)
-            binding.ini.text = elapseTime
-
-
-
-            var remaningTime = createTimeLabel(totalTime - currentPosition)
-
-            binding.fim.text = "-$remaningTime"
-
-
+            Toast.makeText(requireContext(), "Ótima opção!!", Toast.LENGTH_LONG).show()
         }
+
+        dialog = buid.create()
+        dialog.show()
     }
-
-    private fun createTimeLabel(time: Int): String{
-
-        var timeLabel = ""
-        var min = time / 1000 / 60
-        var sec = time / 1000 % 60
-
-        timeLabel = "$min:"
-        if (sec < 10 ) timeLabel += "0"
-        timeLabel += sec
-
-        return timeLabel
-
-    }
-
 }
